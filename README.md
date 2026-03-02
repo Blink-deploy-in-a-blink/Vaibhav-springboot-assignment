@@ -170,8 +170,28 @@ Unit tests implemented for:
 - Transaction management
 - RESTful URL patterns
 
+## Security Notes
+
+**Current Dependency Versions:**
+- Spring Framework: 5.3.39 (latest in 5.3.x line)
+- MySQL Connector: 8.0.33 (latest for Java 8)
+- Logback: 1.2.13 (patched)
+
+**Known Limitations:**
+Due to Java 8 compatibility requirements, some dependencies cannot be upgraded to their latest versions:
+- Spring Framework 6.x requires Java 17+
+- MySQL Connector 8.2.x requires Java 11+
+
+**Recommendations for Production:**
+- Upgrade to Java 11+ to enable MySQL Connector 8.2.0+
+- Upgrade to Java 17+ to enable Spring Framework 6.1.14+
+- These upgrades will resolve remaining known vulnerabilities
+
+The current versions represent the best available choices within Java 8 constraints and include all available security patches for the 5.3.x and 8.0.x release lines.
+
 ## Future Enhancements
 
+- Upgrade to Java 11+ and migrate to latest Spring/MySQL versions
 - Payment gateway integration
 - Email notifications
 - PDF ticket generation
