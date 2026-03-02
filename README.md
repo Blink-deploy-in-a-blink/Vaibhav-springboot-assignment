@@ -205,4 +205,4 @@ Vaibhav - Developer
 
 ## License
 
-This project is developed as part of a Spring Boot assignment for Deloitte.
+This project is developed as part of a Spring Boot assignment.
