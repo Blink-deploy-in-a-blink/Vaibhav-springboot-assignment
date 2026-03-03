@@ -1,5 +1,5 @@
 package com.flightreservation.service;
-
+import java.time.*;
 import com.flightreservation.dao.BookingDAO;
 import com.flightreservation.dao.FlightDAO;
 import com.flightreservation.dao.TicketDAO;
@@ -64,9 +64,11 @@ public class BookingService {
         return savedBooking;
     }
 
-    public Booking findById(Integer bookingId) {
-        return bookingDAO.findById(bookingId);
-    }
+//    public Booking findById(Integer bookingId) {
+//        return bookingDAO.findById(bookingId);
+//    }
+    
+    
 
     public List<Booking> getBookingsByUserId(Integer userId) {
         logger.info("Fetching bookings for user ID: {}", userId);
@@ -83,6 +85,7 @@ public class BookingService {
     public List<Booking> getAllBookingsWithFlights() {
         logger.info("Fetching all bookings with flight details");
         List<Booking> bookings = bookingDAO.findAll();
+        logger.info("Total bookings found: {}", bookings.size());
 
         for (Booking booking : bookings) {
             Flight flight = flightDAO.findById(booking.getFlightId());
@@ -91,6 +94,36 @@ public class BookingService {
 
         return bookings;
     }
+    
+//    public List<Booking> getAllBookingsWithFlights() {
+//
+//        logger.info("Fetching all bookings with flight details");
+//        List<Booking> bookings = bookingDAO.findAll();
+//        logger.info("Total bookings found: {}", bookings.size());
+//
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        for (Booking booking : bookings) {
+//
+//            Flight flight = flightDAO.findById(booking.getFlightId());
+//            booking.setFlight(flight);
+//
+//            // 🔥 Combine journey_date + arrival_time
+//            LocalDate journeyDate = booking.getJourneyDate();
+//            LocalTime arrivalTime = flight.getArrivalTime();
+//
+//            LocalDateTime arrivalDateTime =
+//                    LocalDateTime.of(journeyDate, arrivalTime);
+//
+//            if (arrivalDateTime.isBefore(now)) {
+//                booking.setBookingStatus("COMPLETED");
+//            } else {
+//                booking.setBookingStatus("UPCOMING");
+//            }
+//        }
+//
+//        return bookings;
+//    }
 
     @Transactional
     public void cancelTicket(Integer ticketId) {

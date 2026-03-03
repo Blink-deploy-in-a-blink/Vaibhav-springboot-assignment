@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class Ticket {
     private Integer ticketId;
 
-    @NotNull(message = "Booking ID is required")
+//    @NotNull(message = "Booking ID is required")
     private Integer bookingId;
 
     @NotEmpty(message = "Passenger name is required")

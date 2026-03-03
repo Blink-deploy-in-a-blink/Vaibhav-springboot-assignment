@@ -69,6 +69,7 @@ public class BookingController {
         model.addAttribute("flight", flight);
 
         if (result.hasErrors()) {
+        	logger.info("Validation errors: {}", result.getAllErrors());
             return "booking-form";
         }
 
@@ -110,17 +111,28 @@ public class BookingController {
 
     @PostMapping("/addPassenger")
     public String processAddPassenger(@Valid @ModelAttribute("ticket") Ticket ticket,
-                                      BindingResult result, HttpSession session, Model model) {
+                                      BindingResult result,
+                                      HttpSession session,
+                                      Model model) {
+
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
             return "redirect:/login";
         }
-
+        
         Booking bookingData = (Booking) session.getAttribute("bookingData");
         Integer currentIndex = (Integer) session.getAttribute("currentPassengerIndex");
+        List<Ticket> passengers = (List<Ticket>) session.getAttribute("passengers");
+
+        // 🔥 ADD THESE NULL CHECKS
+        if (bookingData == null || currentIndex == null || passengers == null) {
+        	return "redirect:/";  // restart booking flow
+        }
+        logger.info("processAddPassenger method called");
         Flight flight = flightService.findById(bookingData.getFlightId());
 
         if (result.hasErrors()) {
+        	logger.info("Validation errors: {}", result.getAllErrors());
             model.addAttribute("passengerNumber", currentIndex + 1);
             model.addAttribute("totalPassengers", bookingData.getNumberOfPassengers());
             model.addAttribute("flight", flight);
@@ -128,7 +140,6 @@ public class BookingController {
             return "add-passenger";
         }
 
-        List<Ticket> passengers = (List<Ticket>) session.getAttribute("passengers");
         passengers.add(ticket);
 
         currentIndex++;
@@ -140,13 +151,10 @@ public class BookingController {
             return "redirect:/booking/confirm";
         }
     }
-
+    
+    // Extra added functionality
     @GetMapping("/confirm")
-    public String showConfirmation(HttpSession session, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) {
-            return "redirect:/login";
-        }
+    public String showConfirmPage(HttpSession session, Model model) {
 
         Booking bookingData = (Booking) session.getAttribute("bookingData");
         List<Ticket> passengers = (List<Ticket>) session.getAttribute("passengers");
@@ -154,16 +162,16 @@ public class BookingController {
         if (bookingData == null || passengers == null) {
             return "redirect:/";
         }
-
+        
         Flight flight = flightService.findById(bookingData.getFlightId());
-
+        
         model.addAttribute("booking", bookingData);
-        model.addAttribute("flight", flight);
         model.addAttribute("passengers", passengers);
+        model.addAttribute("flight", flight);
 
         return "booking-confirmation";
     }
-
+    
     @PostMapping("/completeBooking")
     public String completeBooking(HttpSession session, Model model) {
         Integer userId = (Integer) session.getAttribute("userId");

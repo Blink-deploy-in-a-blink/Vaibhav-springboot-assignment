@@ -30,9 +30,6 @@
     </style>
 </head>
 <body>
-	<div style="text-align:right; font-size:14px;">
-	    Current Date & Time: ${currentDateTime}
-	</div>
     <div class="container">
         <h1>Flight Reservation System</h1>
 

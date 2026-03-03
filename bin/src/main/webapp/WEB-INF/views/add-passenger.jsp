@@ -47,9 +47,6 @@
                 </form:select>
                 <form:errors path="passengerGender" cssClass="error"/>
             </div>
-			<form:hidden path="bookingId"/>
-			<input type="hidden" name="passengerNumber" value="${passengerNumber}" />
-			<input type="hidden" name="totalPassengers" value="${totalPassengers}" />
 
             <button type="submit" class="btn">
                 <c:choose>
